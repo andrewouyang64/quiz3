@@ -1,39 +1,42 @@
+// selet elements
 var startEl=document.getElementById('start-btn');
 var questionsEl=document.getElementById('questions');
 var questionDisplayEl=document.getElementById('questionDisplay');
 var timerEl=document.getElementById("timer");
-
-
 var resultEl=document.getElementById('result');
+
+//set vaiables for questions
 var q1 = "Commonly used data types DO NOT include_____";
 var q2 = "The condition in an if/else statment is enclosed within_____";
 var q3 = "Arrays in Java Script can be used to store_____";
 var q4 = "String values must be enclosed with_______when being assigned to variable";
 var q5 = "A very useful tool used during development and debugging for printing content to the debugger is";
 
+// set arrays for answers
 var answerOptionQ1 = ["1 strings","2 booleans","3 alerts", "4 numbers"];
 var answerOptionQ2 = ["1 quotes","2 curly brackets","3 parentheses", "4 square brackets"];
 var answerOptionQ3 = ["1 numbers and strings","2 other arrays","3 booleans", "4 all of the above"];
 var answerOptionQ4 = ["1 commars","2 curly brackets","3 quotes", "4 parentheses"];
 var answerOptionQ5 = ["1 java script","2 teminal/bash","3 for loop", "4 console.log"];
+
 var a=0;
 var penalties = [a];
-var timeCount=100;
+var timeCount=70;
 var answer = [];
 var score = [];
 var c="Correct!(previous quiz)";
 var w="Incorrect!(previous quiz)";
-var highestScore=[];
+var highestScore={name:"aa", score: 0};
+localStorage.setItem("higestScore",JSON.stringify(highestScore));
 var finalScore=[];
 
 //var viewHiScore=document.getElementById("hightscore");
 //viewHiScore.onclick=function () {
 //viewHiScore.innerHTML="The highest score: "+ localStorageGetItem("hiSC");
 //}
-
+// starting page
 startEl.addEventListener('click', startFunc);
 function startFunc() { 
-    //event.preventDault();
     
     setTime();
     a=0;
@@ -61,8 +64,6 @@ function startFunc() {
 
 
     button3.onclick=function()
-    //button3.addEventListener('click', functionA)
-    //function functionA(event)
     {
         document.getElementById('result').innerText=c;
         nextPage1();
@@ -86,7 +87,7 @@ function startFunc() {
         nextPage1();
     }
 
-
+    // first page
     function nextPage1() {
         q=q2;
         document.getElementById('questionDisplay').innerText=q;
@@ -120,6 +121,7 @@ function startFunc() {
     
     }}
 
+    // 2nd page
     function nextPage2() {
         
         q=q3;
@@ -152,6 +154,7 @@ function startFunc() {
             nextPage3();
         }}
     
+        // 3rd page
         function nextPage3() {
             
             q=q4;
@@ -184,6 +187,7 @@ function startFunc() {
                 nextPage4();
             }}
         
+            // 4th page
             function nextPage4() {
                 
                 q=q5;
@@ -219,18 +223,16 @@ function startFunc() {
 
             }}
 
+            // all done page
         function allDone () {
             document.getElementById('questionDisplay').innerText="All done!"
             var yourScore=document.createElement("p");
-           
-            //function final() {
             
             var fScore=timeCount.valueOf()-penalties[0].valueOf();
             yourScore.innerHTML= "YOUR SCORE FOR THIS TIME:  "+fScore;
             finalScore.unshift(fScore);
             document.getElementById('questions').appendChild(yourScore);
-            //}
-            //final();
+    
 
             document.getElementById('answers').removeChild(button1);
             document.getElementById('answers').removeChild(button2);
@@ -246,29 +248,31 @@ function startFunc() {
             document.getElementById("questions").appendChild(newInput);
 
             var subButton=document.createElement("button");
-            subButton.innerHTML= "Confirm";
+            subButton.innerHTML= "Submit";
             document.getElementById('submit-btn').appendChild(subButton);
         
-
+            // last page
             subButton.onclick=function lastPage() 
             {
                   
-            //lastPage();
-            //}
-
-            //function lastPage()
-            //{
-            document.getElementById('questionDisplay').innerText="YOUR HIGHEST SCORE";
-                
+            document.getElementById('questionDisplay').innerText="THE HIGHEST SCORE";
+             
+                // store the highest score function
                 storeScore();
                 function storeScore() {
+                var testerName=newInput.value;
                 var y=finalScore[0].valueOf();
-                var z=localStorage.getItem("hiSc").valueOf();
+                
+                var scoreRecord=JSON.parse(localStorage.getItem("higestScore"));
+                var z=scoreRecord.score;
+                var recordName=scoreRecord.name;
                 if(y>z) {
-                    localStorage.setItem("hiSc", y);
-                    yourScore.innerHTML=newInput.value+" :   "+y;}
-                    else {
-                    yourScore.innerHTML=newInput.value+" :   "+z;
+                    highestScore.name=testerName;
+                    highestScore.score=y;
+                    localStorage.setItem("higestScore",JSON.stringify(highestScore));
+                    yourScore.innerHTML=testerName+" :   "+y;}
+                else {
+                    yourScore.innerHTML=recordName+" :   "+z;
                     
                     }} 
 
@@ -289,7 +293,7 @@ function startFunc() {
                 yourScore.innerHTML="";
                 document.getElementById('questions').removeChild(clearBtn);
                 document.getElementById('submit-btn').removeChild(subButton);
-                timeCount=100;
+                timeCount=70;
                 answer.unshift(1);
                     startFunc();
                 }
@@ -300,7 +304,7 @@ function startFunc() {
                 }    
     }   }       }               
         
-
+// timer function
 function setTime() {
    var timerInterval = setInterval(function() {
       timeCount--;
