@@ -26,14 +26,15 @@ var answer = [];
 var score = [];
 var c="Correct!(previous quiz)";
 var w="Incorrect!(previous quiz)";
-var highestScore={name:"aa", score: 0};
+var highestScore={name:"Andrew", score: 0};
 localStorage.setItem("higestScore",JSON.stringify(highestScore));
 var finalScore=[];
 
-//var viewHiScore=document.getElementById("hightscore");
-//viewHiScore.onclick=function () {
-//viewHiScore.innerHTML="The highest score: "+ localStorageGetItem("hiSC");
-//}
+var viewHiScore=document.getElementById("highscore");
+viewHiScore.onclick=function () {
+viewHiScore.innerHTML=highestScore.name+": "+highestScore.score;
+}
+
 // starting page
 startEl.addEventListener('click', startFunc);
 function startFunc() { 
@@ -225,6 +226,7 @@ function startFunc() {
 
             // all done page
         function allDone () {
+            viewHiScore.innerHTML="View High Score";
             document.getElementById('questionDisplay').innerText="All done!"
             var yourScore=document.createElement("p");
             
@@ -285,7 +287,12 @@ function startFunc() {
                 clearBtn=document.createElement("button");
                 clearBtn.innerHTML="Clear high score";
                 document.getElementById('questions').appendChild(clearBtn);
-            
+                
+                // view hihg score
+                //var viewHiScore=document.getElementById("hightscore");
+                //viewHiScore.onclick=function () {
+                //viewHiScore.innerHTML="The highest score: "+ localStorageGetItem("hiSC");
+                //}
 
                 subButton.onclick=function() {
 
@@ -300,7 +307,10 @@ function startFunc() {
 
                 clearBtn.onclick=function() {
                     yourScore.innerHTML="The highest score has been cleared!"
-                    localStorage.setItem("hiSc", 0);
+                    highestScore.name="AA"
+                    highestScore.score=0;
+                    localStorage.setItem("higestScore",JSON.stringify(highestScore));
+                
                 }    
     }   }       }               
         
